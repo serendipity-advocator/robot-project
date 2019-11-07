@@ -202,7 +202,7 @@ public:
     }
     void get_R()
     {
-      cout<<"The charging place in this area is locted at";
+      cout<<"The charging place (R) in this area is located at";
       cout<<"("<<R_x<<", "<<R_y<<")"<<endl;
     }
     void clean_area_initializing()
