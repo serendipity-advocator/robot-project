@@ -15,10 +15,14 @@ private:
   int Y = -1;
   char shape;
   int Dist_to_R = -1;
-  point* right;
-  point* left;
-  point* up;
-  point* down;
+  int color = 0;
+  int discover = 0;
+  int finish =0;
+  int predecessor = -1;
+  point* right = 0;
+  point* left = 0;
+  point* up = 0;
+  point* down = 0;
 public:
   void set_X(int hor_index)
   {
@@ -55,6 +59,38 @@ public:
   int get_D_to_R()
   {
     return Dist_to_R;
+  }
+  point* Up()
+  {
+    return up;
+  }
+  point* Down()
+  {
+    return down;
+  }
+  point* Left()
+  {
+    return left;
+  }
+  point* Right()
+  {
+    return right;
+  }
+  void Set_up(point* insert)
+  {
+    up = insert;
+  }
+  void Set_down(point* insert)
+  {
+    down = insert;
+  }
+  void Set_left(point* insert)
+  {
+    left = insert;
+  }
+  void Set_right(point* insert)
+  {
+    right = insert;
   }
 };
 
@@ -260,7 +296,6 @@ public:
               cout<<area[i][j].get_D_to_R()<<endl;
               enough_battery = area[i][j].get_D_to_R();
             }
-
           }
         }
       }
@@ -272,6 +307,32 @@ public:
         print_D_to_R();
         cout<<"illegal clean area! Without enought battery."<<endl;
         exit(1);
+      }
+      for(int i=0; i<ver_vertex; i++)
+      {
+        for(int j=0; j<hor_vertex; j++)
+        {
+          if(i>0 && area[i-1][j].get_shape()!='1')
+          {
+            area[i][j].Set_up(&area[i-1][j]);
+            cout<<"The upside of the area["<<i<<"]["<<j<<"] = area["<<i-1<<"]["<<j<<"]"<<endl;
+          }
+          if(i<(ver_vertex-1) && area[i+1][j].get_shape()!='1')
+          {
+            area[i][j].Set_down(&area[i+1][j]);
+            cout<<"The downside of the area["<<i<<"]["<<j<<"] = area["<<i+1<<"]["<<j<<"]"<<endl;
+          }
+          if(j>0 && area[i][j-1].get_shape()!='1')
+          {
+            area[i][j].Set_left(&area[i][j-1]);
+            cout<<"The leftside of the area["<<i<<"]["<<j<<"] = area["<<i<<"]["<<j-1<<"]"<<endl;
+          }
+          if(j<(hor_vertex-1) && area[i][j+1].get_shape()!='1')
+          {
+            area[i][j].Set_right(&area[i][j+1]);
+            cout<<"The rightside of the area["<<i<<"]["<<j<<"] = area["<<i<<"]["<<j+1<<"]"<<endl;
+          }
+        }
       }
 }
     point** get_area()
@@ -309,6 +370,36 @@ public:
         cout<<endl<<endl;
       }
     }
+    /*void DFS(int Start)
+    {
+    int time = 0;
+    int k = Start;
+    for(int i=0; i<ver_vertex; i++)
+    {
+      for(int j=0; j<hor_vertex; j++)
+      {
+        if (area[i][j].color == 0)
+        {// 若vertex不是白色, 則進行以該vertex作為起點之搜尋
+            DFSVisit(i, j, time);
+        }
+      }
+    }
+}
+    void DFSVisit(int ver, int hor, int &time)
+    {   // 一旦有vertex被發現而且是白色, 便進入DFSVisit()
+    area[i][j].color = 1;                         // 把vertex塗成灰色
+    area[i][j].discover = ++time;                 // 更新vertex的discover時間
+      for ()
+      {                    // 分成兩段
+          if (color[i] == 0)
+          {
+              predecessor[m] = vertex;        // 更新其predecessor
+              DFSVisit(m, time)      // 立刻以其作為新的搜尋起點, 進入新的DFSVisit()
+          }
+      }
+    area[i][j].color = 2;                         // 當vertex已經搜尋過所有與之相連的vertex後, 將其塗黑
+    area[i][j].finish = ++time;                   // 並更新finish時間
+  }*/
 };
 int main()
 {
